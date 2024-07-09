@@ -1,0 +1,21 @@
+volumes:
+  db_compose_teste: 
+
+services:
+  mysql:
+    image: mysql:8.3.0
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: true
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_compose_teste:/var/lib/mysql    
+  php:
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    build:
+      context: .
+      dockerfile: Dockerfile    
+    command: php -S 0.0.0.0:8000 -t /app
