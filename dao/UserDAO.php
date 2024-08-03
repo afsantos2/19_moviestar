@@ -25,7 +25,24 @@ class UserDAO implements UserDAOInterface {
   }
 
   public function create(User $user, $authUser = false) {
-    
+
+    $stmt = $this->conn->prepare('INSERT INTO 
+      users( name, lastname, email, password, token) 
+      VALUES (:name, :lastname, :email, :password, :token)'
+    );
+
+    $stmt->bindParam(':name', $user->name);
+    $stmt->bindParam(':lastname', $user->lastname);
+    $stmt->bindParam(':email', $user->email);
+    $stmt->bindParam(':password', $user->password);
+    $stmt->bindParam(':token', $user->token);
+
+    $stmt->execute();
+
+    // Autenticar o usuário caso seja true
+    if ($authUser) {
+      $this->setTokenToSession($user->token);
+    }
   }
 
   public function update(User $user) {
@@ -46,6 +63,28 @@ class UserDAO implements UserDAOInterface {
 
   public function findByEmail($email) {
     
+    if ($email != '') {
+      
+      $stmt = $this->conn->prepare('SELECT * FROM users WHERE email = :email');
+      $stmt->bindParam(':email', $email);
+      $stmt->execute();
+
+      // verifica a contagem de linhas
+      if ($stmt->rowCount() > 0) {
+
+        
+        $data = $stmt->fetch();
+        $user = $this->buildUser($data);
+
+        return $user;
+      } 
+      else {
+        return false;
+      }
+    } 
+    else {
+      return false;
+    }
   }
 
   public function findById($id) {
