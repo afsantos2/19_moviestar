@@ -14,7 +14,7 @@
 
   // varifica o tipo de formulario
   if ($type == 'register') {
-    $name = filter_input(INPUT_POST, "type");
+    $name = filter_input(INPUT_POST, "name");
     $lastname = filter_input(INPUT_POST, "lastname");
     $email = filter_input(INPUT_POST, "email");
     $password = filter_input(INPUT_POST, "password");
