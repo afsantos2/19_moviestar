@@ -62,4 +62,18 @@
       // Enviar uma mensagem de erro, de dados faltantes
       $message->setMessage('Por favor, preencha todos os campos.', 'error', 'back');
     }
+  } else if ($type == 'login') {
+
+    $email = filter_input(INPUT_POST, "email");
+    $password = filter_input(INPUT_POST, "password");
+
+    // tenta autenticar usuário
+    $userDao->authenticateUser($email, $password)
+     ? $message->setMessage('Seja bem-vindo', 'success', 'editprofile.php')
+     : $message->setMessage('Usuário e/ou senha incorretos.', 'error', 'back');
+    
+  } else {
+
+    // redireciona usuário em caso de erro
+    $message->setMessage('Informações inválidas', 'error', 'index.php');
   }
