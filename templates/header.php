@@ -47,12 +47,12 @@ $userData = $userDao->verifyToken(false);
 
           <?php if($userData): ?>
             <li class="nav-item">
-              <a href="<?=$BASE_URL?>dashboard.php" class="nav-link">
+              <a href="<?=$BASE_URL?>newmovie.php" class="nav-link">
                 <i class="far fa-plus-square"></i> Incluir filme
               </a>
             </li>
             <li class="nav-item">
-              <a href="<?=$BASE_URL?>newmovie.php" class="nav-link">Meus filmes</a>
+              <a href="<?=$BASE_URL?>dashboard.php" class="nav-link">Meus filmes</a>
             </li>
             <li class="nav-item">
               <a href="<?=$BASE_URL?>editprofile.php" class="nav-link bold">
