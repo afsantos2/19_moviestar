@@ -15,7 +15,7 @@ if ($userData->image == '') {
   $userData->image = 'user.png';
 }
 ?>
-  <div id="main-container" class="container-fluid">
+  <div id="main-container" class="container-fluid edit-profile-page">
     <div class="col-md-12">
       <form action="<?= $BASE_URL ?>user_process.php" method="post" enctype="multipart/form-data">
         <input type="hidden" name="type" value="update">
@@ -47,11 +47,29 @@ if ($userData->image == '') {
             </div>
             <div class="form-group">
               <label for="bio">Sobre você:</label>
-              <textarea class="form-control" name="bio" id="bio" rows="5"><?= $userData->bio ?></textarea>
+              <textarea class="form-control" name="bio" id="bio" rows="5" placeholder="Fale um pouco sobre você"><?= $userData->bio ?></textarea>
             </div>
           </div>
         </div>
       </form>
+      <div id="change-password-container">
+        <div class="col-md-4">
+          <h2>Alterar senha:</h2>
+          <p class="page-description">Digite a nova senha e confirme:</p>
+          <form action="<?= $BASE_URL ?>user_process.php" method="post">
+            <input type="hidden" name="type" value="changepassword">
+            <div class="form-group">
+              <label for="password">Senha:</label>
+              <input type="password" name="password" id="password" placeholder="Digite a nova senha" class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="confirmpassword">Senha:</label>
+              <input type="password" name="confirmpassword" id="confirmpassword" placeholder="Confirme a nova senha" class="form-control">
+            </div>
+            <input type="submit" class="btn form-btn" value="Alterar Senha">
+          </form>
+        </div>
+      </div>
     </div>
   </div>
 <?php 
