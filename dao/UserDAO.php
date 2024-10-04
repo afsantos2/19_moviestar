@@ -73,7 +73,7 @@ class UserDAO implements UserDAOInterface {
     if ($redirect) {
 
       // Redireciona para o perfil do usuário
-      $this->message->setMessage('Dados atualizados com sucesso!', 'success', 'editprofile');
+      $this->message->setMessage('Dados atualizados com sucesso!', 'success', 'editprofile.php');
     }
   }
 
