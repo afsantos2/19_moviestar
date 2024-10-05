@@ -62,7 +62,27 @@ if ($type === 'update') {
   $userDao->update($userData);
 
 } else if($type === 'changepassword') {
+  // Receber dados do post
+  $password = filter_input(INPUT_POST, "password");
+  $confirmpassword = filter_input(INPUT_POST, "confirmpassword");
 
+  $userData = $userDao->verifyToken();
+
+  $id = $userData->id; 
+
+  if ($password == $confirmpassword) {
+    $user = new User();
+    $finalPassword = $user->generatePassword($password);
+
+    $user->password = $finalPassword;
+    $user->id = $id;
+
+    $userDao->changePassword($user);
+  }
+  else {
+    $message->setMessage('As senhas não batem!', 'error', 'editprofile.php');
+  }
+  
 } else {
   $message->setMessage('Informações inválidas', 'error', 'index.php');
 }
