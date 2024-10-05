@@ -19,7 +19,3 @@ COPY . /app
 
 # Defina o diretório de trabalho
 WORKDIR /app
-
-# Comando para rodar a aplicação (ajuste conforme necessário)
-#CMD ["php", "index.php"]
-
