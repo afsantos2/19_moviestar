@@ -1,8 +1,13 @@
 # Use a imagem base oficial do PHP 7.4.33
 FROM php:7.4.33-cli
 
+ENV TZ=America/Sao_Paulo
+
 # Instale extensões do PHP necessárias (se houver)
-RUN apt-get update && apt-get install -y \
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime \ 
+    && echo $TZ > /etc/timezone \
+    && printf '[Date]\ndate.timezone="%s"\n', $TZ > /usr/local/etc/php/conf.d/tzone.ini \
+    && apt-get update && apt-get install -y \
     libxml2-dev \
     libjpeg-dev \ 
     libpng-dev \
@@ -14,8 +19,7 @@ RUN apt-get update && apt-get install -y \
     pdo_mysql \
     gd 
 
-# Copie os arquivos da aplicação para o contêiner
+
 COPY . /app
 
-# Defina o diretório de trabalho
 WORKDIR /app
