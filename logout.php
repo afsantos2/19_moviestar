@@ -1,6 +1,9 @@
-<?php 
+<?php
+require_once('dao/UserDAO.php');
+require_once('globals.php');
+require_once('db.php');
 
-require_once 'templates/header.php';
+$userDao = new UserDAO($conn, $BASE_URL);
 
 if ($userDao) {
   $userDao->destroyToken();
