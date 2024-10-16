@@ -89,6 +89,80 @@ else if ($type == 'delete') {
     $message->setMessage('Informações inválidas!', 'error', 'index.php');
   }
 }
+else if ($type == 'update') {
+
+  // Receber os dados dos inputs
+  $title = filter_input(INPUT_POST, 'title');
+  $description = filter_input(INPUT_POST, 'description');
+  $trailer = filter_input(INPUT_POST, 'trailer');
+  $category = filter_input(INPUT_POST, 'category');
+  $length = filter_input(INPUT_POST, 'length');
+  $id = filter_input(INPUT_POST, 'id');
+
+  $movieData = $movieDao->findById($id);
+
+  if ($movieData) {
+
+    // Verificar se o filme é do usuário
+    if ($movieData->users_id === $userData->id) {
+
+      // Validação mínima de dados
+      if (!empty($title) && !empty($description) && !empty($category)) { 
+
+        // Edição do filme
+        $movieData->title = $title;
+        $movieData->description = $description;
+        $movieData->trailer = $trailer;
+        $movieData->category = $category;
+        $movieData->length = $length;
+
+        // Upload de imagem do filme 
+        if (isset($_FILES['image']) && !empty($_FILES['image']['tmp_name'])) {
+          $image = $_FILES['image'];
+          $imageTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+          $jpgArray = ['image/jpeg', 'image/jpg'];
+
+          // Checando o tipo da imagem
+          if (in_array($image['type'], $imageTypes)) {
+
+            // checar se jpg
+            if (in_array($image['type'], $jpgArray)) {
+              $imageFile = imagecreatefromjpeg($image['tmp_name']);
+            } 
+            else {
+              $imageFile = imagecreatefrompng($image['tmp_name']);
+            }
+
+            // Gerando o nome da imagem
+            $imageName = $movieData->imageGenerateName();
+
+            imagejpeg($imageFile, './img/movies/' . $imageName, 100);
+
+            $movieData->image = $imageName;
+
+          } else {
+            $message->setMessage('Tipo inválido de mensagem', 'error', 'back');
+          }
+        }
+
+        $movieDao->update($movieData);
+      } 
+      else {
+
+        $message->setMessage('Você precisa adicionar pelo menos: título, descrição e categoria!', 'error', 'back');
+      }
+
+      
+
+    } else {
+      $message->setMessage('Informações inválidas!', 'error', 'index.php');
+    }
+    
+  } else {
+    $message->setMessage('Informações inválidas!', 'error', 'index.php');
+  }
+
+}
 else {
   $message->setMessage('Informações inválidas!', 'error', 'index.php');
 }
