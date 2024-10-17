@@ -153,7 +153,7 @@ class MovieDAO implements MovieDAOInterface {
 
     $stmt->execute();
 
-    $this->message->setMessage("Filme removido com sucesso!", "success", "dashboard.php");
+    $this->message->setMessage("Filme editado com sucesso!", "success", "dashboard.php");
   }
 
   public function destroy($id) {
