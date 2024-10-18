@@ -5,6 +5,7 @@
   require_once('globals.php');
   require_once('models/Movie.php');
   require_once('dao/MovieDAO.php');
+  require_once('dao/ReviewDAO.php');
   require_once('db.php');
 
   require_once('models/Message.php');
@@ -16,6 +17,8 @@
   $movie;
 
   $movieDao = new MovieDAO($conn, $BASE_URL);
+
+  $reviewDao = new ReviewDAO($conn, $BASE_URL);
 
   if (empty($id)) {
     $message->setMessage('O filme não foi encontrado!', 'error', 'index.php');
@@ -42,12 +45,13 @@
     if ($userData->id === $movie->users_id) {
       $userOwnsMovie = true;
     }
+
+    // Resgatar as revies do filme
+    $alreadyReviewed = $reviewDao->hasAlreadyReviewed($id, $userData->id);
   }
 
-  // Resgagar as reviews do filme
-  $alreadyReviewed = false;
-
-
+  // Resgatar as reviews do filme
+  $movieReviews = $reviewDao->getMoviesReview($movie->id);
 ?>
 
 <div id="main-container" class="container-fluid">
